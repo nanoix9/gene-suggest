@@ -55,8 +55,5 @@ def query_gene_suggest(query, species, limit):
             .order_by(Gene.display_label) \
             .limit(limit)
     result = stmt.all()
-    #print(result, type(result))
     return [g.display_label for g in result]
 
-if __name__ == '__main__':
-    print(query_gene_suggest('a', 'homo_sapiens', 10))

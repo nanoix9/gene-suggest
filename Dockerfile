@@ -10,6 +10,9 @@ COPY . /app
 # execute everyone's favorite pip command, pip install -r
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
+# run unit test
+RUN python -m pytest
+
 # unblock port for the Flask app to run on
 EXPOSE 9000
 
