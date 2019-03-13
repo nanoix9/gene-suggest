@@ -11,7 +11,7 @@ DB_URI = 'mysql://anonymous@ensembldb.ensembl.org/ensembl_website_90'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from .models import Gene
@@ -46,10 +46,6 @@ def index():
 def query_gene_suggest(query, species, limit):
     res = db.session.query(Gene).first()
 
-    #meta = db.MetaData(bind=db.engine)
-    #print(meta)
-    #genes = db.Table(TABLE_NAME, meta, autoload=True)
-
     stmt = db.session.query(Gene.display_label) \
             .distinct() \
             .filter( \
@@ -58,11 +54,9 @@ def query_gene_suggest(query, species, limit):
                     Gene.display_label.ilike(query + '%'))) \
             .order_by(Gene.display_label) \
             .limit(limit)
-    print(stmt)
     result = stmt.all()
-    print(result, type(result))
+    #print(result, type(result))
     return [g.display_label for g in result]
 
 if __name__ == '__main__':
     print(query_gene_suggest('a', 'homo_sapiens', 10))
-    app.run()
