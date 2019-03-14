@@ -43,17 +43,17 @@ and load balancing. However, I would strongly prefer to deloy it with Docker, wh
 easier way for environment and dependency management. 
 
 In terms of scalability, since this service is stateless, it can be easily scaled horizontally. 
-However, the database would be the bottleneck. To tackle this, I have some proposals below:
+However, the database might be the bottleneck. To handle this, I have some proposals below:
 
-1. Introduce slave DB and increase the number of copies. This service only read from DB instead of 
-    modifying it, so there will be no consistency issue.
+1. Introduce slave DBs and increase the number of copies. This service only reads from DB instead of 
+    modifies it, so there will be no consistency issue.
 
 2. Incorporate an cache layer, such as Memcached or Redis, to improve the speed of data accessing.
 
 3. Introduce advanced data structure, such as Trie tree, or prefix hashing table, which will significantly
-    speeding up the searching. As we are only searching for one species, we can build separated Trie trees
-    or prefix hashing tables for each species. As shown by simple query, the number of genes for one species
-    is roughly 10k+, which can be fit into memory without difficulty.
+    speeding up the searching. As we are only searching for one species at a time, we can build separated Trie trees
+    or prefix hashing tables for each species. As shown by a simple query, the maximum number of genes for one species
+    is roughly 60k+, which can be fit into memory without difficulty.
 
 ## Testing
 
